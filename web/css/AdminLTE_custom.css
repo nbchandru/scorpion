@@ -1,0 +1,43 @@
+body > .header .logo {
+	font-size: 18px;
+}
+.btn {
+	cursor: default;
+}
+.fa-red {
+	color: #F56954;
+}
+.btn-circle {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	padding: 6px 0;
+	font-size: 12px;
+	line-height: 1.428571429;
+	border-radius: 15px;
+
+}
+
+.pace .pace-progress {
+	background-color: #f56954;
+}
+
+.table-responsive {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.callout {
+	background: white !important;
+	color: black;
+	border-color: #676767;
+	border-radius: 3px;
+}
+
+h3.nomargin {
+	margin-top: 0;
+}
+
+.btn-big {
+	height: 60px;
+}

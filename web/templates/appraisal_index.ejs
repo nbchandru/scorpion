@@ -1,0 +1,35 @@
+
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">
+	        <img alt="Brand" src="/images/faculty.png" class="logo">
+	        <a class="navbar-brand brand-text" href="#">Faculty Appraisal</a>
+
+
+	      </a>
+	    </div>
+	    <a ui-sref="staff_appraisal_login"><p class="navbar-text navbar-right navbar-link">Staff Login</p></a>
+	  </div>
+	</nav>
+
+	<div class="vertical-container">
+		<div class="vertical-center">
+			<article class="box">
+				<h2>Log In</h2>
+				<form>
+					<label class="field-label">
+					USN
+					</label>
+					<div class="input-group">
+						<input ng-model="student_usn" type="text" class="input large" value maxlength="50">
+						<div class="button-group">
+							<button ng-click="loginStudent()" type="submit" class="button is-info large" role="button">Login</button>
+						</div>
+					</div>
+	
+					
+				</form>
+			</article>
+		</div>
+	</div>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+        <title>Omniscient terminal - Login</title>
+
+        <!--<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>-->
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="css/styles.css" rel="stylesheet" type="text/css">
+    </head>
+
+<body>
+<header class="header">
+    <div class="container">
+        <h1>Omniscient terminal - Login</h1>
+    </div>
+</header>
+<br>
+
+<div class="container login">
+    <h2>Login</h2>
+    <form id="login" name="login" action="loginServlet" method="post">
+        <label class="field-label">Username</label>
+        <div class="input-group">
+            <input id="Username" name="Username" type="text" class="input large">
+        </div>
+        <label class="field-label">Password</label>
+        <div class="input-group">
+            <input id="password" name="password" type="password" class="input large">
+        </div>
+        <br>
+        <input type="submit" value="Login"
+               class="btn btn-primary">
+
+    </form>
+</div>
+
+</body>
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="javascripts/jquery.form.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        var e = {
+            success: showResponse,
+            url: "loginServlet",
+            type: "post",
+            dataType: "json"
+        };
+        $("#login").ajaxForm(e)
+    });
+    function showResponse(e, o, s, n) {
+        if(e.err===true)
+        {
+            alert(e.msg);
+        }
+        else if(e.redirect)
+        {
+            window.location.href = e.redirect;
+        }
+    }
+</script>
+</html>

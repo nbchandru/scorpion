@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default">
+    <div class="container container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img alt="Brand" src="/images/faculty.png" class="logo">
+                <a class="navbar-brand brand-text" href="#">Faculty Appraisal</a>
+
+
+            </a>
+        </div>
+        <a ui-sref="staff_change_password"><p class="navbar-text navbar-right navbar-link">Change Password</p></a>
+        <a ui-sref="staff_flag_admin"><p class="navbar-text navbar-right navbar-link">Report Error</p></a>
+        <a ng-click="logout()"><p class="navbar-text navbar-right navbar-link">Logout</p></a>
+    </div>
+</nav>
+
+<div class="container" >
+
+
+    <div class="row padding">
+        <div class="col-md-4" ng-repeat="d in infor.data.result">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                    <h2 class="panel-title" >{{ d.subject_name }}</h2>
+                    <h3 class="col-lg-12" > {{ d.type }}</h3>
+
+                </div>
+                <div class="panel-body">
+                    <h4>Class: <strong>{{ d.code }}</strong></h4>
+                    <h4>Student Strength: <strong>{{ d.total }}</strong>
+                        <h4>Students Appraised: <strong>{{ d.appraised }}</strong>
+                            <br><br>
+                            
+                            <button class="btn btn-primary" role="button" ng-click = 'viewReport(d.code,d.table)' >View Apprisal</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+    </div>
+
+
+</div>
+</div>

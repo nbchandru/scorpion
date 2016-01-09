@@ -1,0 +1,70 @@
+.header {
+	background-color: #4285f4;
+	color: #FFF;
+}
+
+.glyphicon-csv {
+	content: url('../img/csv.png');
+	width: 120px;
+}
+.glyphicon-csvE {
+    content: url('../img/csvE.png');
+    width: 120px;
+}
+.glyphicon-csvT {
+    content: url('../img/csvT.png');
+    width: 120px;
+}
+.glyphicon-csvX {
+    content: url('../img/csvX.png');
+    width: 120px;
+}
+.glyphicon-ng{
+    content:url('../img/notgiven.png');
+    width:10px;
+    height: 10px;
+}
+.glyphicon-g
+{
+    content:url('../img/given.png');
+    width:10px;
+    height: 10px;
+}
+
+.list-group-item {
+	font-size: 20px;
+	margin: 2px;
+}
+
+.text {
+	margin-top: -0.5em;
+}
+
+.list-group-item span.text {
+	margin-top: -0.5em;
+}
+
+.btn-xlg {
+	padding: 25px 75px;
+	font-size: 24px;
+}
+
+.btn-llg {
+	padding: 20px 40px;
+	margin-right: 40px;
+}
+
+.login {
+    width: 50%;
+    background-color: #ffffff;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+.dumb {
+    margin-top: 30px;
+    background-color: transparent;
+    border:none;
+}
