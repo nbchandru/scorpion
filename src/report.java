@@ -87,13 +87,7 @@ public class report extends HttpServlet
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Arrays.fill(per,0.0);
-//
-//            System.out.println(getServletContext().getRealPath("/WEB-INF/omni.properties"));
-//            InputStream inputStream=new FileInputStream(getServletContext().getRealPath("/WEB-INF/omni.properties"));
-//            Properties properties=new Properties();
-//            properties.load(inputStream);
-//              jrxmlPath = properties.getProperty("jrxml");
-//              reportPath = properties.getProperty("report");
+
               jrxmlPath="C:\\Users\\chandrasekar\\Desktop\\jrxml";
               reportPath="C:\\Users\\chandrasekar\\Desktop\\report";
         HttpSession session = request.getSession();
