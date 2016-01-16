@@ -23,6 +23,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.WordUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -283,8 +284,8 @@ public class report extends HttpServlet
 
                     //  String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`='" + appno + "' and `department`=" + Department + " and  `sem` =" + Semester + " and `section`= " + Section + "and  `subject_code`=" + Subject + " and `subject_type`= " + Subject_type + "and `batch`= " + Batch + "and `group` = " + Group + "and  (`teacher_id` = " + teacher + ") ;";
                     // String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`='" + appno + "' and `department`=" + Department + " and  `sem` =" + Semester + " and `section`= " + Section + "and  `subject_code`=" + Subject + " and `subject_type`= " + Subject_type + "and `batch`= " + Batch + "and `group` = " + Group + "and  (`teacher_id` = " + teacher + ") order by `taecher_id`;";
-                    String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department` = '"+Department+"'  and  `sem` " + Semester + " and `group` = 'teacher' and  `teacher_id` " + teacher + " order by `teacher_id`;";
-                    String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department`='"+Department+"' and  `sem` " + Semester + " and `group` = 'teacher' and  (`teacher_id` " + teacher + ") order  by `teacher_id`;";
+                    String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`=" + appno + " and  `sem` " + Semester + " and `group` = 'teacher' and  `teacher_id` " + teacher + " order by `teacher_id`;";
+                    String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`=" + appno + " and  `sem` " + Semester + " and `group` = 'teacher' and  (`teacher_id` " + teacher + ") order  by `teacher_id`;";
 
                     System.out.println(sqltd);
                     System.out.println(sqlappno);
@@ -345,8 +346,8 @@ public class report extends HttpServlet
                         rsapp.beforeFirst();// goes to first resultset to check again
                         j=0;
                         while (rsapp.next()) {
-                            String tea = rsapp.getString("teacher_id");
-                            if (teacher_id[i].equals(tea)&& !rsapp.getString("sem").equals(null))  // if this condition is satisfied - teacher teaches this class - generate report for this appraisal
+                            String tea = rsapp.getString("teacher_id");// if this condition is satisfied - teacher teaches this class - generate report for this appraisal
+                            if (teacher_id[i].equals(tea)&& !rsapp.getString("sem").equals(null))
                             {
                                 j++;
                                 appraisal_id[j] = rsapp.getString("appraisal_id");
@@ -394,12 +395,12 @@ public class report extends HttpServlet
                                 Map parameters = new HashMap();
                                 parameters.put("appno", appraisal_number[j]);
                                 parameters.put("tid", teacher_id[i].toUpperCase());
-                                parameters.put("name", first + " " + middle + " " + last);
-                                parameters.put("desig", designation[i]);
-                                parameters.put("subname", sub.getString("subject_name") + " (" + sub.getString("subject_name_short").toUpperCase() + ")");
-                                parameters.put("section", section[i] == null ? "" : section[j]);
+                                parameters.put("name",  WordUtils.capitalizeFully(first) + " " +  WordUtils.capitalizeFully(middle) + " " +  WordUtils.capitalizeFully(last));
+                                parameters.put("desig",  WordUtils.capitalizeFully(designation[i]));
+                                parameters.put("subname", WordUtils.capitalizeFully(sub.getString("subject_name")) + " (" + sub.getString("subject_name_short").toUpperCase() + ")");
+                                parameters.put("section", section[i] == null ? "" : section[j].toUpperCase());
                                 parameters.put("sem", sem[j] == null ? "" : sem[j]);
-                                parameters.put("batch",batch[j]);
+                                parameters.put("batch",batch[j].toUpperCase());
                                 parameters.put("subject", subject_code[j].toUpperCase() + "_" + subject_type[j].toUpperCase());
                                 parameters.put("totalstu", String.valueOf(tot.getInt("total")));
 
@@ -540,9 +541,10 @@ public class report extends HttpServlet
 
                                 }
                             }
-                            parameters.put("desig", td.getString("designation")==null?"-":td.getString("designation"));
-                            parameters.put("tid", teacher_id[i]);
-                            parameters.put("name", name[i]);
+
+                            parameters.put("desig", td.getString("designation")==null?"-": WordUtils.capitalizeFully(td.getString("designation")));
+                            parameters.put("tid", teacher_id[i].toUpperCase());
+                            parameters.put("name", WordUtils.capitalizeFully(name[i]));
                             parameters.put("appno", appno);
 //servletOutputStream.println("<br>"+vtid+"</br>");
                             jasperPrint = JasperFillManager.fillReport(jasperReport2, parameters, new JREmptyDataSource());
