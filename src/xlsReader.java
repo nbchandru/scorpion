@@ -360,8 +360,8 @@ public class xlsReader extends HttpServlet {
                     }
 
                 }
-                semFix fix=new semFix();
-                fix.fixsemesters();
+    //            semFix fix=new semFix();
+  //              fix.fixsemesters();
 
                 RequestDispatcher r=request.getRequestDispatcher("/create.jsp");
                 r.forward(request,response);
@@ -404,103 +404,6 @@ public class xlsReader extends HttpServlet {
 
     }
 
-
-/*
- connection.setAutoCommit(false);
-                String input_map_query="SELECT `field_name`, `table_name`, `attribute_name`, `action` FROM input_map where input_id= ? ;";
-                PreparedStatement p2=connection.prepareStatement(input_map_query);
-                p2.setString(1,input_id);
-                ResultSet rs2=p2.executeQuery();
-                rs2.last();
-                int repeatsize=rs2.getRow();
-                rs2.beforeFirst();
-                //write logic for multiple table attribute later
-                //SELECT DISTINCT `table_name` FROM input_map where input_id= 'teacher_timetable'
-                String[] attributes=new String[repeatsize];
-                String[] fieldnames=new String[repeatsize];
-                int var=0;
-                String tableName="";
-                int var2=0;
-                while(rs2.next())
-                {
-                    System.out.println("field_name : "+rs2.getString(1)+" table_name : "+rs2.getString(2)+" attribute_name : "+rs2.getString(3)+" action : "+rs2.getString(4));
-                    String field_name=rs2.getString(1);
-                    tableName=rs2.getString(2);
-                    String attribute_name=rs2.getString(3);
-                    String action=rs2.getString(4);
-                    attributes[var++]=attribute_name;
-                    fieldnames[var2++]=field_name;
-                }
-                int y = -1;
-                Iterator<String> z=sheet_names.iterator();
-                while(z.hasNext()) {
-                    y++;
-                    ArrayList<String> row = all_tables.get(y).get(0);
-                    String questionmarks = StringUtils.repeat("?,", repeatsize);
-                    questionmarks = (String) questionmarks.subSequence(0, questionmarks
-                            .length() - 1);
-
-                    String query = "INSERT INTO " + tableName + "("+StringUtils.join(attributes,",")+") VALUES ("+questionmarks+")";
-                    PreparedStatement ps=connection.prepareStatement(query);
-
-                    int i=1;
-                    while(i<all_tables.get(y).size()) {
-                        for(int j=0;j<repeatsize;j++) {
-                            int col_index = row.indexOf(fieldnames[j]);
-                            ps.setString(j+1, all_tables.get(y).get(i).get(col_index));
-                        }
-                        ps.addBatch();
-                        System.out.println("Query :" + query);
-                        i++;
-                    }
-                    ps.executeBatch();
-                    connection.commit();
-                    z.next();
-                }
-*/
-
-/*
-                // For input map
-                Iterator<String> z=sheet_names.iterator();
-                while (z.hasNext()) {
-                        String tableName = "input_map";
-                        ArrayList<String> row = all_tables.get(0).get(0);
-
-                        String[] headerRow = new String[row.size()];
-                        headerRow = row.toArray(headerRow);
-                        // Query to insert
-                        String questionmarks = StringUtils.repeat("?,", headerRow.length);
-                        questionmarks = (String) questionmarks.subSequence(0, questionmarks
-                                .length() - 1);
-                        String query = SQL_INSERT.replaceFirst(TABLE_REGEX, tableName);
-                        query = query.replaceFirst(KEYS_REGEX, StringUtils.join(headerRow, ","));
-                        query = query.replaceFirst(VALUES_REGEX, questionmarks);
-                        System.out.println("Query: " + query);
-                        connection.setAutoCommit(false);
-                        PreparedStatement ps1 = connection.prepareStatement(query);
-                        int i = 1;
-                        String[] nextLine = new String[all_tables.size()];
-                        System.out.println("All tables .get (y) size :" + all_tables.get(0).size());
-                        while ((i < all_tables.get(0).size())) {
-                            int index = 1;
-                            nextLine = all_tables.get(0).get(i).toArray(nextLine);
-                            i++;
-                            for (String string : nextLine) {
-                                if (string.equals(""))
-                                    ps1.setString(index++, null);
-                                else
-                                    ps1.setString(index++, string);
-
-                            }
-                            ps1.addBatch();
-                        }
-                        ps1.executeBatch();
-                        connection.commit();
-                   z.next();
-                    }
-
-
-*/
 
 
 }

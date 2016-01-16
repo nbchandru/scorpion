@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.export.*;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -84,7 +85,7 @@ public class report extends HttpServlet
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    Arrays.fill(per,0.0);
 //
 //            System.out.println(getServletContext().getRealPath("/WEB-INF/omni.properties"));
 //            InputStream inputStream=new FileInputStream(getServletContext().getRealPath("/WEB-INF/omni.properties"));
@@ -206,7 +207,7 @@ public class report extends HttpServlet
                     System.out.println("update done");
                     // check for condition all and for validation in the records
 //                    if (Initials.equals("All"))
-                    teacher = "in (SELECT `teacher_id`FROM `teacher_details` WHERE `department`='mca')";
+                    teacher = "in (SELECT `teacher_id`FROM `teacher_details` WHERE `department`='"+Department+"')";
 //                    else {
 //                        teacher = "(SELECT `teacher_id`FROM `teacher_details` WHERE `department`='mca' and `staff_initial`=" + Initials + ")";
 //                        Statement ts1 = conn.createStatement();
@@ -251,7 +252,7 @@ public class report extends HttpServlet
                     //   reportPath=reportPath+"mca";
 
                     if (Semester.equals("All")) {
-                        Semester = "in (SELECT `sem`  FROM `class` WHERE class_id in (Select class_id from `session` where teacher_id in (SELECT teacher_id from teacher_details where department = 'mca')))";
+                        Semester = "in (SELECT distinct(`sem`)  FROM `class` WHERE class_id in (Select class_id from `session` where teacher_id in (SELECT teacher_id from teacher_details where department = '"+Department+"')))";
                         File dir = new File(reportPath+Department);
                         if(dir.exists())
                         deleteDir(dir);
@@ -278,43 +279,12 @@ public class report extends HttpServlet
                         //      response.sendRedirect("index.jsp");
                         //  }
                     }
-//                    if (Section.equals("All"))
-//                        Section = "(SELECT `section`  FROM `class` WHERE class_id= (select class_id from session where teacher_id = (SELECT teacher_id from teacher_details where department = 'mca')) or `sem` is NULL";
-//                    else {
-//                        Section = "`" + Section + "`";
-//                        Statement ts6 = conn.createStatement();
-//                        ResultSet t6 = stmt.executeQuery("SELECT `section` FROM `appraisal` WHERE `section`="+Section+";");
-//                        if (!t6.next()) {
-//                            response.sendRedirect("index.jsp");
-//                        }
-//                    }
-//                    if (Batch.equals("All"))
-//                        Batch = "(SELECT `batch`  FROM `class` WHERE class_id= (select class_id from session where teacher_id = (SELECT teacher_id from teacher_details where department = 'mca')) or `sem` is NULL";
-//                    else {
-//                        Batch = "`" + Batch + "`";
-//                        Statement ts7 = conn.createStatement();
-//                        ResultSet t7 = stmt.executeQuery("SELECT `batch` FROM `appraisal` WHERE `batch`="+Batch+";");
-//                        if (!t7.next()) {
-//                            response.sendRedirect("index.jsp");
-//                        }
-//                    }
-//
-//                    if (Group.equals("All"))
-//                        Group = "'teacher' or group = course_end_feedback";
-//                    else {
-//                        if (!Group.equals("teacher")&&!Group.equals("course_end_feedback")) {
-//                            response.sendRedirect("index.jsp");
-//                        }
-//                        Group = "'" + Group + "'";
-//
-//
-//                    }
 
 
                     //  String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`='" + appno + "' and `department`=" + Department + " and  `sem` =" + Semester + " and `section`= " + Section + "and  `subject_code`=" + Subject + " and `subject_type`= " + Subject_type + "and `batch`= " + Batch + "and `group` = " + Group + "and  (`teacher_id` = " + teacher + ") ;";
                     // String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`='" + appno + "' and `department`=" + Department + " and  `sem` =" + Semester + " and `section`= " + Section + "and  `subject_code`=" + Subject + " and `subject_type`= " + Subject_type + "and `batch`= " + Batch + "and `group` = " + Group + "and  (`teacher_id` = " + teacher + ") order by `taecher_id`;";
-                    String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department` = 'mca'  and  `sem` " + Semester + " and `group` = 'teacher' and  `teacher_id` " + teacher + " order by `teacher_id`;";
-                    String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department`='mca' and  `sem` " + Semester + " and `group` = 'teacher' and  (`teacher_id` " + teacher + ") order  by `teacher_id`;";
+                    String sqlappno = "SELECT `appraisal_id`, `session_id`, `appraisal_number`, `department`, `sem`, `section`, `subject_code`, `subject_type`, `batch`, `group`, `teacher_id` FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department` = '"+Department+"'  and  `sem` " + Semester + " and `group` = 'teacher' and  `teacher_id` " + teacher + " order by `teacher_id`;";
+                    String sqltd = "SELECT distinct(`teacher_id`)FROM `appraisal` WHERE `appraisal_number`=" + appno + " and `department`='"+Department+"' and  `sem` " + Semester + " and `group` = 'teacher' and  (`teacher_id` " + teacher + ") order  by `teacher_id`;";
 
                     System.out.println(sqltd);
                     System.out.println(sqlappno);
@@ -322,7 +292,7 @@ public class report extends HttpServlet
                     rsapp = stmapp.executeQuery(sqlappno);
                     rstdapp = stmdapp.executeQuery(sqltd);
                     if(!rsapp.next()||!rstdapp.next())
-                    {                            response.sendRedirect("index.jsp");
+                    {     response.sendRedirect("index.jsp");
                     }
                     String[] appraisal_id = new String[100];
                     String[] session_id = new String[100];
@@ -350,7 +320,7 @@ public class report extends HttpServlet
                         teacher_id[i] = rstdapp.getString("teacher_id");
                         if(rstdapp.getString("teacher_id").equals(null))
                             continue;
-                        String s1 = "SELECT first_name,middle_name,last_name,department,designation,staff_initial FROM teacher_details WHERE teacher_id ='" + teacher_id[i] + "' and department =";
+                        String s1 = "SELECT first_name,middle_name,last_name,department,designation,staff_initial FROM teacher_details WHERE teacher_id ='" + teacher_id[i] + "' and department ='"+Department+"';";
 
                         ResultSet td = stmtd.executeQuery(s1);
                         td.next();
@@ -376,7 +346,7 @@ public class report extends HttpServlet
                         j=0;
                         while (rsapp.next()) {
                             String tea = rsapp.getString("teacher_id");
-                            if (teacher_id[i].equals(tea))  // if this condition is satisfied - teacher teaches this class - generate report for this appraisal
+                            if (teacher_id[i].equals(tea)&& !rsapp.getString("sem").equals(null))  // if this condition is satisfied - teacher teaches this class - generate report for this appraisal
                             {
                                 j++;
                                 appraisal_id[j] = rsapp.getString("appraisal_id");
@@ -395,7 +365,7 @@ public class report extends HttpServlet
 
 
                                 System.out.println("teacher_count ===>" + i);
-                                System.out.println("appraisal_cout for current teacher ==>" + j);
+                                System.out.println("appraisal_count for current teacher ==>" + j);
                                 System.out.println("appraisal_id: " + appraisal_id[j] + "session_id: " + session_id[j] + "appraisal_number: " + appraisal_number[j] + "department: " + department[j] + "sem: " + sem[j] + "section: " + section[j] + "subject_code: " + subject_code[j] + "subject_type: " + subject_type[j] + "batch: " + batch[j] + "group: " + group[j] + "teacher_id: " + teacher_id[j]);
 
 
@@ -462,8 +432,13 @@ public class report extends HttpServlet
                                     poor = val.getInt("poor");
                                     sum[m] = (exe * 10) + (vgood * 8) + (good * 6) + (poor * 4);
                                     total += sum[m];
+                                    if (totgi[j]!=0)
                                     per[m] = (sum[m] / ( totgi[j] * 10))*100;
+                                        else
+                                        per[m]=0;
                                     perr+=per[m];
+
+
                                     // per[m]=sum[m]/(totgi[j]*10);
                                     parameters.put("exe" + m, String.valueOf(exe));
                                     parameters.put("vg" + m, String.valueOf(vgood));
@@ -476,9 +451,11 @@ public class report extends HttpServlet
                                 perr = perr/(x);
                                 parameters.put("total", new BigDecimal(total).setScale(2, BigDecimal.ROUND_CEILING).stripTrailingZeros().toPlainString());
 
+                                if (totgi[j]!=0)
                                 percentage = total / (totgi[j] * 10 * x) * 100;
-
-                                // parameters.put("percentage", String.valueOf(percentage));
+                                else
+                                    percentage =0;
+                                            // parameters.put("percentage", String.valueOf(percentage));
                                 parameters.put("percentage", new BigDecimal(perr).setScale(2, BigDecimal.ROUND_CEILING).stripTrailingZeros().toPlainString());
                                 tper[j] = percentage;
                                 System.out.println("abcdefg " + comments);
@@ -539,7 +516,7 @@ public class report extends HttpServlet
                                     subject_code[r] = "-";
                                 if (batch[r] == null)
                                     batch[r] = "-";
-                                parameters.put("slno" + r,String.valueOf(r) );
+                                parameters.put("slno" + r,String.valueOf(r));
                                 parameters.put("dep" + r, department[r]);
                                 parameters.put("sem" + r, sem[r]);
                                 parameters.put("sec" + r, section[r]);
